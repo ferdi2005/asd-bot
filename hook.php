@@ -2,10 +2,11 @@
 // Load config
 require 'config.php';
 
-$POST = file_get_contents('php://input');
-$POST = json_decode($POST);
+$ASD = file_get_contents('php://input');
+$POST = json_decode($ASD);
+
 if (isset($POST->message->chat->type) && $POST->message->chat->type == 'group') {
-    if (preg_match('/asd/', $POST->message->text)) {
+    if (strpos($POST->message->text, "asd") !== false) {
         $sql = "SELECT * FROM groups WHERE id = " . $POST->message->chat->id;
         
         $asdco = $conn->query($sql);
@@ -65,4 +66,6 @@ if (isset($POST->message) && $POST->message->chat->type == 'group' && $POST->mes
                     $response = file_get_contents('http://api.telegram.org/bot' . $bot_api_key . '/sendMessage?chat_id=' . $POST['message']['chat']['id'] . '&text=Bella zio! Sono il bot asdoso creato da Ferdinando Traversa (ferdinando.me) da idea di Valerio Bozzolan (reyboz.it), asd! Aggiungimi ai tuoi gruppi e conterò gli asd.');
 
 }
-
+if (isset($response)) {
+    error_log($response . PHP_EOL);
+}
